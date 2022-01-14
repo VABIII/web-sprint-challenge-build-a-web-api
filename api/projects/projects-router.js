@@ -35,11 +35,14 @@ router.get('/:id', validateId, logger, (req, res, next) => {
 
 router.post('/', logger,(req, res, next) => {
     const { name, description } = req.body
+
+
     if(!name || !description) {
         res.status(400).json({
             message: "Missing name or body fields"
         })
-    } else {
+    }
+    else {
         Projects.insert(req.body)
             .then(newProject => {
                 res.status(201).json(newProject)
@@ -51,13 +54,20 @@ router.post('/', logger,(req, res, next) => {
 router.put('/:id', validateId, logger, (req, res, next) => {
     const { id } = req.params
     const {name, description, completed} = req.body
+    const project = Projects.get(id)
+    console.log(project)
+
 
     if(!name || !description || completed === undefined) {
         res.status(400).json({
             message: "Missing name or body fields"
         })
-
-    } else {
+    } else if (!project) {
+        res.status(404).json({
+            message: 'Project with that id does not exist'
+        })
+    }
+    else {
         Projects.update(id, {name, description, completed})
             .then(updatedPost => {
                 console.log(updatedPost)
