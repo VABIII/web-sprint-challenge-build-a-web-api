@@ -18,7 +18,6 @@ server.use('*', (req, res, next) => {
     res.status(404).json({
         message: `${req.baseUrl} could not be found`
     })
-
 })
 
 server.use((err, req, res, next) => { // eslint-disable-line

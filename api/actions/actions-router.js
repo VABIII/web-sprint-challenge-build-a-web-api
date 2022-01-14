@@ -1,7 +1,6 @@
 const express = require('express')
 
 const Actions = require('./actions-model')
-const Projects = require("../projects/projects-router")
 
 const {validateActionId, validateProjectId} = require('./actions-middlware')
 
@@ -41,15 +40,6 @@ router.post('/', (req, res, next) => {
     } else {
         Actions.insert({project_id, notes, description})
             .then(newAction => {
-                // console.log(newAction)
-                // const project =  Projects.get(newAction.project_id)
-                // if(!project) {
-                //     res.status(404).json({
-                //         message: "Action not found"
-                //     })
-                // } else {
-                //     res.status(201).json()
-                // }
                 res.status(201).json(newAction)
             })
             .catch(next)
