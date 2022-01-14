@@ -4,6 +4,7 @@ const Projects = require('./projects-model')
 
 const router = express.Router()
 
+const validateProjectBody = require('./projects-middleware')
 
 
 router.get('/', (req, res, next) =>{
@@ -53,21 +54,21 @@ router.put('/:id', (req, res, next) => {
     const { id } = req.params
     const {name, description, completed} = req.body
 
-    if(!name || !description || !completed) {
+    if(!name || !description || completed === undefined) {
         res.status(400).json({
-            message: "Missing an updated field"
+            message: "Missing name or body fields"
         })
+
     } else {
         Projects.update(id, {name, description, completed})
-            .then(({id}) => {
-                res.json(Projects.get(id))
+            .then(updatedPost => {
+                console.log(updatedPost)
+                res.json(updatedPost)
             })
-            // .then(project => {
-            //     res.json(project)
-            // })
             .catch(next)
     }
 })
+
 
 router.delete('/:id', (req, res, next) =>{
     const { id } = req.params
