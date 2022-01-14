@@ -165,6 +165,7 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
   router directs http requests to specific end points based on the url instead of the http method
 
 5. Describe tooling used to manually test the correctness of an API.
+
     Programs like Postman or Insomnia that allow you to create and execute mock http requests and view the response
 
 Ok, got it. Thanks!

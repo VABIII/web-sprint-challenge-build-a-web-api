@@ -20,13 +20,13 @@ router.get('/:id', validateId, logger, (req, res, next) => {
 
     Projects.get(id)
         .then(project => {
-            if(!project){
-                res.status(404).json({
-                    message: "Stuff and stuff"
-                })
-            } else {
+            // if(!project){
+            //     res.status(404).json({
+            //         message: "Stuff and stuff"
+            //     })
+            // } else {
                 res.json(project)
-            }
+            // }
         })
         .catch(next)
 })
