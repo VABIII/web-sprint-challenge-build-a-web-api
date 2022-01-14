@@ -64,8 +64,6 @@ router.get('/:id/actions', (req, res, next) => {
             res.json(actions)
         })
         .catch(next)
-
-
 })
 
 
