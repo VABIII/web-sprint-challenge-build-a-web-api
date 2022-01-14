@@ -4,10 +4,10 @@ const Projects = require('./projects-model')
 
 const router = express.Router()
 
-const validateProjectBody = require('./projects-middleware')
+const { validateId, logger } = require('./projects-middleware')
 
 
-router.get('/', (req, res, next) =>{
+router.get('/', logger, (req, res, next) =>{
     Projects.get()
         .then(projects => {
             res.json(projects)
@@ -16,7 +16,7 @@ router.get('/', (req, res, next) =>{
 
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', validateId, logger, (req, res, next) => {
     const { id } = req.params
 
     Projects.get(id)
@@ -28,14 +28,12 @@ router.get('/:id', (req, res, next) => {
             } else {
                 res.json(project)
             }
-
-
         })
         .catch(next)
 
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', logger,(req, res, next) => {
     const { name, description } = req.body
     if(!name || !description) {
         res.status(400).json({
@@ -50,7 +48,7 @@ router.post('/', (req, res, next) => {
     }
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', validateId, logger, (req, res, next) => {
     const { id } = req.params
     const {name, description, completed} = req.body
 
@@ -69,8 +67,7 @@ router.put('/:id', (req, res, next) => {
     }
 })
 
-
-router.delete('/:id', (req, res, next) =>{
+router.delete('/:id', validateId, logger, (req, res, next) =>{
     const { id } = req.params
 
     Projects.remove(id)
@@ -87,9 +84,7 @@ router.delete('/:id', (req, res, next) =>{
 
 })
 
-
-
-router.get('/:id/actions', (req, res, next) => {
+router.get('/:id/actions', validateId, logger, (req, res, next) => {
     const {id} = req.params
     Projects.getProjectActions(id)
         .then(actions => {

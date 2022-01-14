@@ -1,17 +1,21 @@
 // add middlewares here related to projects
 const Projects = require('./projects-model')
 
+const validateId = (req, res, next) => {
+    Projects.get(req.params.id)
+        .then(id => {
+            if(!id) {
+                next({status: 404, message: "Something"})
+            } else {
+                next()
+            }
+        })
+        .catch(next)
+}
 
-async function validateProjectBody(req, res, next) {
-    const {name, description, completed} = req.body
-    console.log(req.body)
-
-    if(name || description || completed) {
-        next()
-    } else {
-       next({status: 400, message: "Error"})
-    }
-
+const logger = (req, res, next) => {
+    console.log(`[${req.method}]  ${req.url} ${new Date()}`)
+    next()
 }
 
 
@@ -21,8 +25,10 @@ async function validateProjectBody(req, res, next) {
 
 
 
-module.exports = validateProjectBody
-
+module.exports = {
+    validateId,
+    logger
+}
 
 
 
