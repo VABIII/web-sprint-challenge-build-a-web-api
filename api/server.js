@@ -1,7 +1,3 @@
-// Configure your server here
-// Build your actions router in /api/actions/actions-router.js
-// Build your projects router in /api/projects/projects-router.js
-// Do NOT `server.listen()` inside this file!
 const express = require('express');
 const server = express();
 
@@ -14,11 +10,16 @@ server.use(express.json())
 server.use('/api/projects', projectsRouter)
 server.use('/api/actions', actionsRouter)
 
-
-
 server.get('/', (req, res) => {
     res.send(`<h2>Let's write some code!</h2>`);
 });
+
+server.use('*', (req, res, next) => {
+    res.status(404).json({
+        message: `${req.baseUrl} could not be found`
+    })
+
+})
 
 server.use((err, req, res, next) => { // eslint-disable-line
     console.log('disaster!')
@@ -27,7 +28,6 @@ server.use((err, req, res, next) => { // eslint-disable-line
         banana: err.banana
     })
 })
-
 
 module.exports = server;
 

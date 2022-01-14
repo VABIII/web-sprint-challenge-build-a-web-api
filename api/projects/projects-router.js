@@ -54,17 +54,10 @@ router.post('/', logger,(req, res, next) => {
 router.put('/:id', validateId, logger, (req, res, next) => {
     const { id } = req.params
     const {name, description, completed} = req.body
-    const project = Projects.get(id)
-    console.log(project)
-
 
     if(!name || !description || completed === undefined) {
         res.status(400).json({
             message: "Missing name or body fields"
-        })
-    } else if (!project) {
-        res.status(404).json({
-            message: 'Project with that id does not exist'
         })
     }
     else {

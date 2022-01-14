@@ -3,6 +3,8 @@ const express = require('express')
 const Actions = require('./actions-model')
 const Projects = require("../projects/projects-router")
 
+const {validateActionId, validateProjectId} = require('./actions-middlware')
+
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
@@ -14,7 +16,7 @@ router.get('/', (req, res, next) => {
 
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', validateActionId, (req, res, next) => {
     const { id } = req.params
     Actions.get(id)
         .then(action => {
@@ -54,7 +56,7 @@ router.post('/', (req, res, next) => {
     }
 })
 
-router.put('/:id', (req, res, next) =>{
+router.put('/:id', validateActionId, validateProjectId, (req, res, next) =>{
     const {project_id, notes, description, completed} = req.body
     const {id} = req.params
 
@@ -75,7 +77,7 @@ router.put('/:id', (req, res, next) =>{
     }
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', validateActionId, (req, res, next) => {
     Actions.remove(req.params.id)
         .then(() => {
             res.json()
@@ -83,40 +85,40 @@ router.delete('/:id', (req, res, next) => {
         .catch(next)
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = router
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
