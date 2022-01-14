@@ -12,20 +12,13 @@ router.get('/', (req, res, next) => {
             res.json(actions)
         })
         .catch(next)
-
 })
 
 router.get('/:id', validateActionId, (req, res, next) => {
     const { id } = req.params
     Actions.get(id)
         .then(action => {
-            if(!action){
-                res.status(404).json({
-                    message: "Get action by id error"
-                })
-            } else {
                 res.json(action)
-            }
         })
         .catch(next)
 })

@@ -20,13 +20,7 @@ router.get('/:id', validateId, logger, (req, res, next) => {
 
     Projects.get(id)
         .then(project => {
-            // if(!project){
-            //     res.status(404).json({
-            //         message: "Stuff and stuff"
-            //     })
-            // } else {
                 res.json(project)
-            // }
         })
         .catch(next)
 })
@@ -72,13 +66,7 @@ router.delete('/:id', validateId, logger, (req, res, next) =>{
 
     Projects.remove(id)
         .then(deleted => {
-            if(!deleted){
-                res.status(404).json({
-                    message: "Deleted error stuff"
-                })
-            } else {
                 res.json(deleted)
-            }
         })
         .catch(next)
 })
