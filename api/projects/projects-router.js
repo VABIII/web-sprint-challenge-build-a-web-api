@@ -16,32 +16,57 @@ router.get('/', (req, res, next) =>{
 })
 
 router.get('/:id', (req, res, next) => {
+    const { id } = req.params
 
-    Projects.get(req.params.id)
+    Projects.get(id)
         .then(project => {
-            res.json(project)
+            if(!project){
+                res.status(404).json({
+                    message: "Stuff and stuff"
+                })
+            } else {
+                res.json(project)
+            }
+
+
         })
         .catch(next)
 
 })
 
 router.post('/', (req, res, next) => {
-    Projects.insert(req.body)
-        .then(newProject => {
-            res.status(201).json(newProject)
+    const { name, description } = req.body
+    if(!name || !description) {
+        res.status(400).json({
+            message: "Missing name or body fields"
         })
-        .catch(next)
-
+    } else {
+        Projects.insert(req.body)
+            .then(newProject => {
+                res.status(201).json(newProject)
+            })
+            .catch(next)
+    }
 })
 
 router.put('/:id', (req, res, next) => {
     const { id } = req.params
-    const changes = req.body
-    Projects.update(id, changes)
-        .then(projectUpdated => {
-            res.json(projectUpdated)
+    const {name, description, completed} = req.body
+
+    if(!name || !description || !completed) {
+        res.status(400).json({
+            message: "Missing an updated field"
         })
-        .catch(next)
+    } else {
+        Projects.update(id, {name, description, completed})
+            .then(({id}) => {
+                res.json(Projects.get(id))
+            })
+            // .then(project => {
+            //     res.json(project)
+            // })
+            .catch(next)
+    }
 })
 
 router.delete('/:id', (req, res, next) =>{
@@ -49,7 +74,13 @@ router.delete('/:id', (req, res, next) =>{
 
     Projects.remove(id)
         .then(deleted => {
-            res.json(deleted)
+            if(!deleted){
+                res.status(404).json({
+                    message: "Deleted error stuff"
+                })
+            } else {
+                res.json(deleted)
+            }
         })
         .catch(next)
 
